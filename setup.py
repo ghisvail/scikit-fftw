@@ -7,8 +7,30 @@
 
 from __future__ import absolute_import, division, print_function
 
-from setuptools import find_packages, setup
+from distutils.command.build import build
+from setuptools.command.install import install
+from setuptools import setup, find_packages
 import os
+
+
+# Access to cffi extension
+def get_ext_modules():
+    import skfftw.bindings.cffi as cffi
+    return [cffi.ffi.verifier.get_extension()]
+
+
+# Build command
+class BuildCommand(build):
+    def finalize_options(self):
+        self.distribution.ext_modules = get_ext_modules()
+        build.finalize_options(self)
+
+
+# Intall command
+class InstallCommand(install):
+    def finalize_options(self):
+        self.distribution.ext_modules = get_ext_modules()
+        install.finalize_options(self)
 
 
 root_dir = os.path.dirname(__file__)
@@ -47,6 +69,10 @@ setup(
     install_requires= [
         "cffi >= 0.6",
         ],
+    cmdclass={
+        "build": BuildCommand,
+        "install": InstallCommand,
+        },
     # for cffi
     zip_safe=False, 
     ext_package="skfftw",   
