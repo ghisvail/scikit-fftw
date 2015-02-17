@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # coding: utf8
 
 # Copyright (c) 2014, 2015 Ghislain Antony Vaillant.
@@ -8,10 +9,14 @@
 from __future__ import absolute_import, division, print_function
 
 from distutils.command.build import build
-from setuptools.command.install import install
+from distutils.command.install import install
+from distutils.command.clean import clean
 from setuptools import setup, find_packages
 import os
+import shutil
 
+
+packages = find_packages(exclude=['docs', 'tests'])
 
 # Access to cffi extension
 def get_ext_modules():
@@ -32,9 +37,53 @@ class InstallCommand(install):
         self.distribution.ext_modules = get_ext_modules()
         install.finalize_options(self)
 
+# Clean command
+# adapted from blaze/setup.py
+class CleanCommand(clean):
+    """Custom command to clean build artefacts."""
+    
+    user_options = [("all", "a", "")]
+    
+    def initialize_options(self):
+        clean.initialize_options(self)
+        self._clean_me = []
+        self._clean_trees = []
+        
+        for toplevel in packages:
+            for root, dirs, files in list(os.walk(toplevel)):
+                for f in files:
+                    if os.path.splitext(f)[-1] in ('.pyc', '.so', '.o', '.pyd'):
+                        self._clean_me.append(os.path.join(root, f))
+                
+                for d in dirs:
+                    if d in ('__pycache__',):
+                        self._clean_trees.append(os.path.join(root, d))
 
-root_dir = os.path.dirname(__file__)
-with open(os.path.join(root_dir, "README.md")) as f:
+        for d in os.listdir(os.curdir):
+            if d in ('build', 'dist'):
+                self._clean_trees.append(d)
+            if d.endswith('.egg-info'):
+                self._clean_trees.append(d)
+
+    def finalize_options(self):
+        clean.finalize_options(self)
+
+    def run(self):
+        for clean_me in self._clean_me:
+            try:
+                print('removing', clean_me)
+                os.unlink(clean_me)
+            except Exception:
+                pass
+        for clean_tree in self._clean_trees:
+            try:
+                print('removing', clean_tree)
+                shutil.rmtree(clean_tree)
+            except Exception:
+                pass
+
+
+with open(os.path.join("README.md")) as f:
     long_description = f.read()
 
 
@@ -65,13 +114,14 @@ setup(
         "Programming Language :: Python :: 3.4",
         "Topic :: Scientific/Engineering",
         ],
-    packages=find_packages(exclude=["tests", "tests.*"]),
+    packages=packages,
     install_requires= [
         "cffi >= 0.6",
         ],
     cmdclass={
         "build": BuildCommand,
         "install": InstallCommand,
+        "clean": CleanCommand,
         },
     # for cffi
     zip_safe=False, 
