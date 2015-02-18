@@ -65,13 +65,13 @@ class plan(object):
         Returns the result of the DFT as a Numpy array.        
         
         The input and output arrays used for DFT computation may be updated 
-        using the input_array and output_array parameters. If the 
-        corresponding dtype or alignment differs from the original array the 
-        plan was constructed with, a copy of the new array is used instead.
+        using the input_array and output_array parameters. If the supplied
+        array(s) is (are) not compatible with the original one(s) supplied 
+        at construct time, a RuntimeError is raised.
         
-        The resulting array may be optionally scaled by the number of samples 
-        by setting the normalize flag to True. The choice of scaling 
-        convention is left to the user.
+        The resulting array may be optionally scaled by setting one of the 
+        normalize flags to True. The choice of scaling convention (none, 
+        by N or by sqrtN) is left to the user.
         """
         self._update_arrays(input_array, output_array)
         self.execute()
@@ -92,7 +92,7 @@ class plan(object):
 
     def _update_arrays(self, input_array, output_array):
         """
-        Private method whose purpose is to update the arrays used by the plan.
+        Private method used for safe update of the internal arrays.
         """
         # check input array
         if input_array is not None:
