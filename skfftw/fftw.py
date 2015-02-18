@@ -112,6 +112,14 @@ class plan(object):
                 raise RuntimeError('Incompatible input array')
 
     @property
+    def direction(self):
+        return self._direction
+
+    @property
+    def flags(self):
+        return self._flags
+
+    @property
     def input_array(self):
         return self._input_array
 
@@ -138,11 +146,3 @@ class plan(object):
     @property
     def N(self):
         return self._input_array.size
-
-    @property
-    def direction(self):
-        return self._direction
-
-    @property
-    def flags(self):
-        return self._flags
