@@ -129,7 +129,7 @@ class plan(object):
 
     @property
     def shape(self):
-        return self._input_array.shape
+        return (self._output_array.size, self._input_array.size)
         
     @property
     def dtype(self):
