@@ -8,7 +8,7 @@
 from __future__ import absolute_import, division, print_function
 
 from skfftw.enums import _get_flag_int, _get_sign_int
-from skfftw.wrappers import fftw, fftwf, fftwl
+from skfftw.wrappers import libfftw, libfftwf, libfftwl
 
 
 __all__ = ('plan',)
