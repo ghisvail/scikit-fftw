@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 
 from skfftw.enums import _get_flag_int, _get_sign_int
 from skfftw.wrappers import libfftw, libfftwf, libfftwl
+import numpy as np
 
 
 __all__ = ('plan',)
@@ -20,15 +21,15 @@ class plan(object):
     The FFTW plan class.
     """
     
-    __planner_funcs = {np.dtype('cdouble'): fftw.plan_dft,
-                       np.dtype('csingle'): fftwf.plan_dft,
-                       np.dtype('clongdouble'): fftwl.plan_dft}
-    __execute_funcs = {np.dtype('cdouble'): fftw.execute_dft,
-                       np.dtype('csingle'): fftwf.execute_dft,
-                       np.dtype('clongdouble'): fftwl.execute_dft}
-    __destroy_funcs = {np.dtype('cdouble'): fftw.destroy_plan,
-                       np.dtype('csingle'): fftwf.destroy_plan,
-                       np.dtype('clongdouble'): fftwl.destroy_plan}
+    __planner_funcs = {np.dtype('cdouble'): libfftw.plan_dft,
+                       np.dtype('csingle'): libfftwf.plan_dft,
+                       np.dtype('clongdouble'): libfftwl.plan_dft}
+    __execute_funcs = {np.dtype('cdouble'): libfftw.execute_dft,
+                       np.dtype('csingle'): libfftwf.execute_dft,
+                       np.dtype('clongdouble'): libfftwl.execute_dft}
+    __destroy_funcs = {np.dtype('cdouble'): libfftw.destroy_plan,
+                       np.dtype('csingle'): libfftwf.destroy_plan,
+                       np.dtype('clongdouble'): libfftwl.destroy_plan}
     
     def __init__(self, input_array, output_array, direction='forward',
                  flags=('estimate',), *args, **kwargs):
