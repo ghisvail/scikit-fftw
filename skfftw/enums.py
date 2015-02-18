@@ -54,7 +54,7 @@ def _get_flag_int(flags_list):
                 flag_int |= flag
             else:
                 try:
-                    flag_int = flag_int | getattr(flags, str(flag).lower())
+                    flag_int |= getattr(flags, str(flag).lower())
                 except AttributeError:
                     pass
     except TypeError:
