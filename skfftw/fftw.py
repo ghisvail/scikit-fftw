@@ -145,4 +145,4 @@ class plan(object):
 
     @property
     def N(self):
-        return self._input_array.size
+        return self._output_array.size
