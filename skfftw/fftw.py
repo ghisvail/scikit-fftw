@@ -73,8 +73,7 @@ class plan(object):
         normalize flags to True. The choice of scaling convention (none, 
         by N or by sqrtN) is left to the user.
         """
-        self._update_arrays(input_array, output_array)
-        self.execute()
+        self.execute_dft(input_array, output_array)
         if normalize or normalize_by_sqrt:
             if normalize_by_sqrt:
                 self._output_array /= np.sqrt(self.N)
@@ -84,11 +83,20 @@ class plan(object):
 
     def execute(self):
         """
-        Execute DFT from current plan.
+        Execute DFT from plan.
         
         For more options, please use the __call__ method of this plan.
         """
         self._execute(self._handle, self._input_array, self._output_array)
+
+    def execute_dft(self, input_array=None, output_array=None):
+        """
+        Execute DFT from plan with optional update of the internal arrays.
+        
+        For more options, please use the __call__ method of this plan.
+        """
+        self._update_arrays(input_array, output_array)
+        self.execute()
 
     def _update_arrays(self, input_array, output_array):
         """
