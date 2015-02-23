@@ -11,6 +11,7 @@ from __future__ import absolute_import, division, print_function
 from distutils.command.build import build
 from distutils.command.install import install
 from distutils.command.clean import clean
+from setuptools.command.test import test
 from setuptools import setup, find_packages
 import os
 import shutil
@@ -134,6 +135,40 @@ class CleanCommand(clean):
                 pass
 
 
+# from py.test documentation
+class TestCommand(test):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        test.initialize_options(self)
+        self.pytest_args = []
+
+    def finalize_options(self):
+        test.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
+
+# class TestCommand(Command):
+#     user_options = []
+#     def initialize_options(self):
+#         pass
+# 
+#     def finalize_options(self):
+#         pass
+# 
+#     def run(self):
+#         import subprocess
+#         import sys
+#         errno = subprocess.call([sys.executable, 'runtests.py'])
+#         raise SystemExit(errno)
+
+
 def keywords_with_side_effects(argv):
     def is_short_option(argument):
         """Check whether a command line argument is a short option."""
@@ -169,6 +204,7 @@ def keywords_with_side_effects(argv):
                 "build": DummyBuildCommand,
                 "install": DummyInstallCommand,
                 "clean": CleanCommand,
+                "test": TestCommand,
             }
         }
     else:
@@ -178,6 +214,7 @@ def keywords_with_side_effects(argv):
                 "build": BuildCommand,
                 "install": InstallCommand,
                 "clean": CleanCommand,
+                "test": TestCommand,
             },
             "ext_package": "skfftw",
         }
