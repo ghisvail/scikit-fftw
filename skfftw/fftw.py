@@ -105,19 +105,19 @@ class plan(object):
         # check input array
         if input_array is not None:
             if (input_array.flags.c_contiguous and
-                input_array.shape == self.shape and
-                input_array.dtype == self.input_dtype):
+                input_array.shape == self.input_array.shape and
+                input_array.dtype == self.input_array.dtype):
                 self._input_array = input_array                
             else:
                 raise RuntimeError('Incompatible input array')
         # check output array        
         if output_array is not None:
             if (output_array.flags.c_contiguous and
-                output_array.shape == self.shape and
-                output_array.dtype == self.output_dtype):
+                output_array.shape == self.output_array.shape and
+                output_array.dtype == self.output_array.dtype):
                 self._output_array = output_array                
             else:
-                raise RuntimeError('Incompatible input array')
+                raise RuntimeError('Incompatible output array')
 
     @property
     def direction(self):
@@ -132,24 +132,8 @@ class plan(object):
         return self._input_array
 
     @property
-    def input_dtype(self):
-        return self._input_array.dtype
-
-    @property
     def output_array(self):
         return self._output_array
-
-    @property
-    def output_dtype(self):
-        return self._output_array.dtype
-
-    @property
-    def shape(self):
-        return (self._output_array.size, self._input_array.size)
-        
-    @property
-    def dtype(self):
-        return self.input_dtype
 
     @property
     def N(self):
