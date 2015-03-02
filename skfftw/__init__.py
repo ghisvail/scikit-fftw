@@ -6,3 +6,5 @@
 # checkout the license terms at http://opensource.org/licenses/BSD-3-Clause).
 
 from __future__ import absolute_import, division, print_function
+
+from .version import VERSION as __version__
