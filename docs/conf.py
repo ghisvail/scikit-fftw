@@ -53,8 +53,9 @@ copyright = '2015, Ghislain Antony Vaillant'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
+from skfftw import __version__
 # The short X.Y version.
-version = skfftw.__version__
+version = __version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
