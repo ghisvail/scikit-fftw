@@ -30,33 +30,3 @@ class Flags(IntEnum):
     patient = FFTW_PATIENT
     estimate = FFTW_ESTIMATE
     wisdom_only = FFTW_WISDOM_ONLY
-
-
-def _get_sign_int(direction):
-    # default to forward transform
-    sign_int = directions.forward
-    if direction in directions:
-        sign_int = direction
-    else:
-        try:
-            sign_int = getattr(directions, str(direction).lower())
-        except AttributeError:
-            pass
-    return sign_int
-
-
-def _get_flag_int(flags_list):
-    # default to max planning effort
-    flag_int = flags.measure
-    try:
-        for flag in flags_list:
-            if flag in flags:
-                flag_int |= flag
-            else:
-                try:
-                    flag_int |= getattr(flags, str(flag).lower())
-                except AttributeError:
-                    pass
-    except TypeError:
-        pass
-    return flag_int

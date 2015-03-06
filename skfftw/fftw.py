@@ -31,8 +31,9 @@ class Plan(object):
                        np.dtype('csingle'): libfftwf.destroy_plan,
                        np.dtype('clongdouble'): libfftwl.destroy_plan}
     
-    def __init__(self, input_array, output_array, direction='forward',
-                 flags=('estimate',), *args, **kwargs):
+    def __init__(self, input_array, output_array,
+                 direction=Directions.forward, flags=(Flags.estimate,),
+                 *args, **kwargs):
         """
         Instantiate a DFT plan.
         """
@@ -46,10 +47,12 @@ class Plan(object):
             raise ValueError("Unsupported data type: {}".format(dt))
         self._input_array = input_array
         self._output_array = output_array
-        sign_int = _get_sign_int(direction)
         self._direction = direction
-        flag_int = _get_flag_int(flags)
+        sign_int = int(self._direction)
         self._flags = flags
+        flag_int = 0
+        for flag in self._flags:
+            flag_int |= int(flag)
         self._handle = self._planner(self._input_array, self._output_array,
                                      sign_int, flag_int)
     
