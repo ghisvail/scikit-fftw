@@ -10,17 +10,17 @@ from __future__ import absolute_import, division, print_function
 from .wrappers.constants import *
 from enum import IntEnum, unique
 
-__all__ = ('directions', 'flags')
+__all__ = ('Directions', 'Flags')
 
 
 @unique
-class directions(IntEnum):
+class Directions(IntEnum):
     forward = FFTW_FORWARD
     backward = FFTW_BACKWARD
 
 
 @unique
-class flags(IntEnum):
+class Flags(IntEnum):
     measure = FFTW_MEASURE
     destroy_input = FFTW_DESTROY_INPUT
     unaligned = FFTW_UNALIGNED

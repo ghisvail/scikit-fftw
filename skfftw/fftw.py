@@ -7,15 +7,15 @@
 
 from __future__ import absolute_import, division, print_function
 
-from skfftw.enums import _get_flag_int, _get_sign_int
+from skfftw.enums import Directions, Flags
 from skfftw.wrappers import libfftw, libfftwf, libfftwl
 import numpy as np
 
 
-__all__ = ('plan',)
+__all__ = ('Plan',)
 
 
-class plan(object):
+class Plan(object):
     
     """
     The FFTW plan class.
