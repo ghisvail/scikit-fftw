@@ -154,20 +154,6 @@ class TestCommand(test):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-# class TestCommand(Command):
-#     user_options = []
-#     def initialize_options(self):
-#         pass
-# 
-#     def finalize_options(self):
-#         pass
-# 
-#     def run(self):
-#         import subprocess
-#         import sys
-#         errno = subprocess.call([sys.executable, 'runtests.py'])
-#         raise SystemExit(errno)
-
 
 def keywords_with_side_effects(argv):
     def is_short_option(argument):
