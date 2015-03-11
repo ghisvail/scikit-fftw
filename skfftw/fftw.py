@@ -71,10 +71,6 @@ class Plan(object):
         using the input_array and output_array parameters. If the supplied
         array(s) is (are) not compatible with the original one(s) supplied 
         at construct time, a RuntimeError is raised.
-        
-        The resulting array may be optionally scaled by setting one of the 
-        normalize flags to True. The choice of scaling convention (none, 
-        by N or by sqrtN) is left to the user.
         """
         self.execute_dft(input_array, output_array)
         if normalization is not Normalization.none:
@@ -126,20 +122,35 @@ class Plan(object):
 
     @property
     def direction(self):
+        """
+        Direction of the transform.
+        """
         return self._direction
 
     @property
     def flags(self):
+        """
+        Planner flags.
+        """
         return self._flags
 
     @property
     def input_array(self):
+        """
+        Input array used internally by the Plan instance.
+        """
         return self._input_array
 
     @property
     def output_array(self):
+        """
+        Output array used internally by the Plan instance.
+        """
         return self._output_array
 
     @property
     def N(self):
+        """
+        Total number of samples. Useful for scaling purposes.
+        """
         return self._output_array.size
