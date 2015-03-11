@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 
-from skfftw.enums import Directions, Flags
+from skfftw.enums import Direction, Flag, Normalization
 from skfftw.wrappers import libfftw, libfftwf, libfftwl
 import numpy as np
 
@@ -32,7 +32,7 @@ class Plan(object):
                        np.dtype('clongdouble'): libfftwl.destroy_plan}
     
     def __init__(self, input_array, output_array,
-                 direction=Directions.forward, flags=(Flags.estimate,),
+                 direction=Direction.forward, flags=(Flag.estimate,),
                  *args, **kwargs):
         """
         Instantiate a DFT plan.
@@ -60,8 +60,8 @@ class Plan(object):
         if self._handle is not None:
             self._destroy(self._handle)
     
-    def __call__(self, input_array=None, output_array=None, normalize=False,
-                 normalize_by_sqrt=False, *args, **kwargs):
+    def __call__(self, input_array=None, output_array=None,
+        normalization=Normalization.none, *args, **kwargs):
         """
         Execute DFT from plan.
         
@@ -77,11 +77,13 @@ class Plan(object):
         by N or by sqrtN) is left to the user.
         """
         self.execute_dft(input_array, output_array)
-        if normalize or normalize_by_sqrt:
-            if normalize_by_sqrt:
+        if normalization is not Normalization.none:
+            if normalization is Normalization.sqrt:
                 self._output_array /= np.sqrt(self.N)
-            else:
+            elif normalization is Normalization.full:
                 self._output_array /= self.N
+            else:
+                raise ValueError("Incompatible normalization")
         return self._output_array
 
     def execute(self):
