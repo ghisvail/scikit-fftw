@@ -7,16 +7,18 @@
 
 from __future__ import absolute_import, division, print_function
 
-from .wrappers.constants import *
+from .backend.constants import *
 import enum
 
-__all__ = ('Direction', 'Flag', 'Normalization')
+__all__ = ('FftwDirection', 'FftwFlag', 'FftwNormalization')
 
 
 @enum.unique
 class Direction(enum.IntEnum):
     forward = FFTW_FORWARD
     backward = FFTW_BACKWARD
+
+FftwDirection = Direction
 
 
 @enum.unique
@@ -31,6 +33,8 @@ class Flag(enum.IntEnum):
     estimate = FFTW_ESTIMATE
     wisdom_only = FFTW_WISDOM_ONLY
 
+FftwFlag = Flag
+
 
 class Normalization(enum.Enum):
     none = 0
@@ -39,3 +43,5 @@ class Normalization(enum.Enum):
     # aliases
     by_sqrt_N = 1
     by_N = 2
+
+FftwNormalization = Normalization
