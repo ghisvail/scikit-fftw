@@ -211,7 +211,7 @@ with open(os.path.join("README.md")) as f:
 
 
 setup(
-    name="scitkit-fftw",
+    name="scikit-fftw",
     version="0.1.dev1",
     description="Python bindings for FFTW",
     long_description=long_description,
