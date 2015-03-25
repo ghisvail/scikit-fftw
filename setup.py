@@ -64,7 +64,7 @@ NO_SETUP_REQUIRES_ARGUMENTS = [
 
 # Access to cffi extension
 def get_ext_modules():
-    import skfftw.bindings.cffi as cffi
+    import skfftw.backend._cffi as cffi
     return [cffi.ffi.verifier.get_extension()]
 
 
